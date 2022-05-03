@@ -1,0 +1,35 @@
+- name: Make sure /etc/wireguard directory exists
+  become: yes
+  file:
+      path: /etc/wireguard
+      state: directory
+      mode: 600
+
+- name: Copy configuration to node
+  become: yes
+  copy:
+      src: "wg-meshconf/output/{{ config_name | default(inventory_hostname) }}.conf"
+      dest: "/etc/wireguard/{{ config_name | default(inventory_hostname) }}.conf"
+      mode: 600
+
+- name: Install Wireguard
+  become: yes
+  apt:
+      update_cache: true
+      name:
+          - wireguard-dkms
+          - wireguard-tools
+      state: present
+
+- name: Add systemd service
+  become: yes
+  template:
+      src: wg-quick.service.j2
+      dest: "/etc/systemd/system/{{ config_name | default(inventory_hostname) }}@wg0.service"
+
+- name: Enable service
+  become: yes
+  systemd:
+      name: "{{ config_name | default(inventory_hostname) }}@wg0.service"
+      enabled: yes
+      state: restarted

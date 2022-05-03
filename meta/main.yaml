@@ -1,0 +1,19 @@
+galaxy_info:
+    author: Riotkit
+    description: Simple automation around wg-meshconf
+    company: Riotkit Tech Collective
+    license: MIT
+    min_ansible_version: 2.10
+
+    galaxy_tags:
+        - wireguard
+        - wg-meshconf
+        - mesh
+        - mesh-vpn
+        - vpn
+        - kubernetes
+        - k3s
+        - riotkit
+        - k8s
+
+dependencies: []
